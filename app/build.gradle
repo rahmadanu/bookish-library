@@ -22,17 +22,26 @@ android {
     }
 
     buildTypes {
+        def keyPropertiesFile = rootProject.file("key.properties")
+        def keyProperties = new Properties()
+        keyProperties.load(new FileInputStream(keyPropertiesFile))
+
         release {
-            minifyEnabled false
+            shrinkResources true
+            minifyEnabled true
             debuggable false
-            buildConfigField "String", 'BASE_URL', "\"https://www.example.com/api/\""
+            buildConfigField "String", 'BASE_URL_BOOKISH_API', "\"${keyProperties.getProperty("BASE_URL_BOOKISH_API")}\""
+            buildConfigField "String", 'BASE_URL_BOOKS_API', "\"${keyProperties.getProperty("BASE_URL_BOOKS_API")}\""
+            buildConfigField "String", 'BOOKS_API_KEY', "\"${keyProperties.getProperty("BOOKS_API_KEY")}\""
             manifestPlaceholders = [enableCrashReporting:"true", enablePerfReporting:"true"]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             applicationIdSuffix ".debug"
             debuggable true
-            buildConfigField "String", 'BASE_URL', "\"https://www.example.com/api/\""
+            buildConfigField "String", 'BASE_URL_BOOKISH_API', "\"${keyProperties.getProperty("BASE_URL_BOOKISH_API")}\""
+            buildConfigField "String", 'BASE_URL_BOOKS_API', "\"${keyProperties.getProperty("BASE_URL_BOOKS_API")}\""
+            buildConfigField "String", 'BOOKS_API_KEY', "\"${keyProperties.getProperty("BOOKS_API_KEY")}\""
             manifestPlaceholders = [enableCrashReporting:"true", enablePerfReporting:"true"]
         }
     }
