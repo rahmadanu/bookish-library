@@ -1,6 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -20,7 +24,16 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            debuggable false
+            buildConfigField "String", 'BASE_URL', "\"https://www.example.com/api/\""
+            manifestPlaceholders = [enableCrashReporting:"true", enablePerfReporting:"true"]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            buildConfigField "String", 'BASE_URL', "\"https://www.example.com/api/\""
+            manifestPlaceholders = [enableCrashReporting:"true", enablePerfReporting:"true"]
         }
     }
     compileOptions {
@@ -30,13 +43,85 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        buildConfig true
+        viewBinding true
+    }
 }
-
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
+    // Dagger Hilt
+    implementation "com.google.dagger:hilt-android:$dagger_version"
+    kapt "com.google.dagger:hilt-compiler:$dagger_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // Okhttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
+
+    // Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutine_play_service_version"
+
+    // Room
+    implementation "androidx.room:room-runtime:$room_ktx_version"
+    implementation "androidx.room:room-ktx:$room_ktx_version"
+    implementation "androidx.paging:paging-runtime-ktx:$room_paging_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$kotlin_lifecycle_version"
+    androidTestImplementation "androidx.room:room-testing:$room_ktx_version"
+    kapt "androidx.room:room-compiler:$room_ktx_version"
+
+    // DataStore
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
+
+    // Sql encryption
+    implementation "net.zetetic:android-database-sqlcipher:$sql_chipper_version"
+    implementation "androidx.sqlite:sqlite-ktx:$sql_kotlin_version"
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
+    implementation 'com.google.firebase:firebase-config'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // Google Login
+    implementation "com.google.android.gms:play-services-auth:$play_service_auth_version"
+
+    // Facebook Login
+    implementation "com.facebook.android:facebook-android-sdk:$facebook_sdk_version"
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+
+    // View
+    implementation "androidx.activity:activity-ktx:$activity_ktx_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
+
+    // Shimmer
+    implementation "com.facebook.shimmer:shimmer:$shimmer_version"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // Google Play Core Library
+    implementation "com.google.android.play:core-ktx:$play_core_version"
+
+    implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
