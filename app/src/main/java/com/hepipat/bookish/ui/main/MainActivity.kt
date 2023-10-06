@@ -1,7 +1,8 @@
-package com.hepipat.bookish
+package com.hepipat.bookish.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.hepipat.bookish.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
