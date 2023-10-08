@@ -1,4 +1,4 @@
-package com.hepipat.bookish.ui.main
+package com.hepipat.bookish.feature.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

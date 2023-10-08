@@ -31,6 +31,7 @@ buildscript {
         play_service_auth_version = "20.7.0"
         play_core_version = "1.8.1"
         facebook_sdk_version = '16.2.0'
+        zxing_version = '4.3.0'
     }
 
     repositories {

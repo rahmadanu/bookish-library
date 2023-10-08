@@ -1,4 +1,4 @@
-package com.hepipat.bookish.ui.scan
+package com.hepipat.bookish.feature.scan
 
 import com.hepipat.bookish.core.domain.model.BooksUi
 
