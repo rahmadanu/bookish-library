@@ -18,13 +18,13 @@ import javax.inject.Inject
 class ScanViewModel @Inject constructor(
     private val repository: BooksRepository,
 ) : ViewModel() {
-    private val _scannedBooks = MutableStateFlow<ScanBooksUiState>(ScanBooksUiState.Loading)
-    val scannedBooks = _scannedBooks.asStateFlow()
+    private val _booksUiState = MutableStateFlow<ScanBooksUiState>(ScanBooksUiState.Loading)
+    val booksUiState = _booksUiState.asStateFlow()
 
     fun scanBooks(isbnCode: String) {
         viewModelScope.launch {
             initScanBooksUiState(isbnCode = isbnCode, repository = repository)
-                .collect { _scannedBooks.value = it }
+                .collect { _booksUiState.value = it }
         }
     }
 }

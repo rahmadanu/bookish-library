@@ -132,6 +132,10 @@ dependencies {
     // Google Play Core Library
     implementation "com.google.android.play:core-ktx:$play_core_version"
 
+    // Unit Testing
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
+
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'

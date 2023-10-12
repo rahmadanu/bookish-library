@@ -2,19 +2,14 @@ package com.hepipat.bookish.feature.scan
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.ResultPoint
-import com.hepipat.bookish.R
 import com.hepipat.bookish.core.base.fragment.BaseFragment
 import com.hepipat.bookish.databinding.FragmentScanBinding
 import com.journeyapps.barcodescanner.BarcodeCallback
@@ -23,7 +18,6 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ScanFragment : BaseFragment<FragmentScanBinding>() {
@@ -65,7 +59,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
 
     override fun initObserver() {
         super.initObserver()
-        scanViewModel.scannedBooks
+        scanViewModel.booksUiState
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 when (it) {
