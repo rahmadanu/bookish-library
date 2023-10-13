@@ -1,9 +1,14 @@
 package com.hepipat.bookish.feature.scan
 
+import android.Manifest
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -12,6 +17,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.ResultPoint
 import com.hepipat.bookish.core.base.fragment.BaseFragment
 import com.hepipat.bookish.databinding.FragmentScanBinding
+import com.hepipat.bookish.helper.permission.PermissionCore
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
@@ -39,12 +45,18 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         override fun possibleResultPoints(resultPoints: List<ResultPoint>) {}
     }
 
+    private val settingsPermissionResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
+            checkPermissions()
+        }
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
     ): FragmentScanBinding = FragmentScanBinding.inflate(inflater, container, false)
 
     override fun onViewReady(savedInstanceState: Bundle?) {
+        checkPermissions()
         initScanner()
     }
 
@@ -72,13 +84,16 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                             }
                             .show()
                     }
+
                     is ScanBooksUiState.NotFound -> {
                         showToast("Book not found")
                     }
+
                     is ScanBooksUiState.Failed -> {}
                     is ScanBooksUiState.Error -> {
                         showToast("Error ${it.message}")
                     }
+
                     is ScanBooksUiState.Loading -> {
                         showToast("Loading...")
                     }
@@ -97,4 +112,34 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         binding.barcodeScanner.pause()
     }
 
+    private fun checkPermissions() {
+        PermissionCore(requireActivity())
+            .permissions(listOf(Manifest.permission.CAMERA))
+            .onAccepted {}
+            .onDenied {}
+            .onForeverDenied {
+                it.forEach { permission ->
+                    if (permission == Manifest.permission.CAMERA) {
+                        showMandatoryPermissionDialog()
+                    }
+                }
+            }
+            .ask()
+    }
+
+    private fun showMandatoryPermissionDialog() {
+        showDialogConfirmation(
+            title = "Need your permission",
+            message = "Scan feature needs your permission",
+            confirmCallback = {
+                val appInfoIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri: Uri = Uri.fromParts("package", requireActivity().packageName, null)
+                appInfoIntent.data = uri
+                settingsPermissionResult.launch(appInfoIntent)
+            },
+            {},
+            null,
+            false
+        )
+    }
 }

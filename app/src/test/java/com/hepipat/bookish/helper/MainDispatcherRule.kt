@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hepipat.bookish.util
+package com.hepipat.bookish.helper
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

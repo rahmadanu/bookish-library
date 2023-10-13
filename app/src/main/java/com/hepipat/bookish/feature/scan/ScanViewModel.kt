@@ -3,7 +3,7 @@ package com.hepipat.bookish.feature.scan
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hepipat.bookish.core.data.repository.BooksRepository
-import com.hepipat.bookish.utils.Result
+import com.hepipat.bookish.helper.api.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,9 +40,11 @@ private fun initScanBooksUiState(
                     if (result.data.id.isNotEmpty()) ScanBooksUiState.Scanned(result.data)
                     else ScanBooksUiState.NotFound
                 }
+
                 is Result.Error -> {
                     ScanBooksUiState.Error(result.exception?.message.toString())
                 }
+
                 is Result.Loading -> {
                     ScanBooksUiState.Loading
                 }

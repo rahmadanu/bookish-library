@@ -11,7 +11,7 @@ data class BooksUi constructor(
     val author: String,
 ) {
 
-    constructor(booksResponse: BooksResponse): this(
+    constructor(booksResponse: BooksResponse) : this(
         id = booksResponse.items.getOrNull(0)?.id ?: "",
         title = booksResponse.items.getOrNull(0)?.volumeInfo?.title ?: "",
         description = booksResponse.items.getOrNull(0)?.volumeInfo?.description ?: "",

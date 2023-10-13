@@ -1,4 +1,4 @@
-package com.hepipat.bookish.utils
+package com.hepipat.bookish.helper.api
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

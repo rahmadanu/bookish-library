@@ -9,7 +9,7 @@ data class BooksResponse(
     @SerializedName("kind")
     var kind: String = "",
     @SerializedName("totalItems")
-    var totalItems: Int = 0
+    var totalItems: Int = 0,
 ) {
     data class Item(
         @SerializedName("accessInfo")
@@ -27,7 +27,7 @@ data class BooksResponse(
         @SerializedName("selfLink")
         var selfLink: String = "",
         @SerializedName("volumeInfo")
-        var volumeInfo: VolumeInfo = VolumeInfo()
+        var volumeInfo: VolumeInfo = VolumeInfo(),
     ) {
         data class AccessInfo(
             @SerializedName("accessViewStatus")
@@ -49,16 +49,16 @@ data class BooksResponse(
             @SerializedName("viewability")
             var viewability: String = "",
             @SerializedName("webReaderLink")
-            var webReaderLink: String = ""
+            var webReaderLink: String = "",
         ) {
             data class Epub(
                 @SerializedName("isAvailable")
-                var isAvailable: Boolean = false
+                var isAvailable: Boolean = false,
             )
 
             data class Pdf(
                 @SerializedName("isAvailable")
-                var isAvailable: Boolean = false
+                var isAvailable: Boolean = false,
             )
         }
 
@@ -68,12 +68,12 @@ data class BooksResponse(
             @SerializedName("isEbook")
             var isEbook: Boolean = false,
             @SerializedName("saleability")
-            var saleability: String = ""
+            var saleability: String = "",
         )
 
         data class SearchInfo(
             @SerializedName("textSnippet")
-            var textSnippet: String = ""
+            var textSnippet: String = "",
         )
 
         data class VolumeInfo(
@@ -108,27 +108,27 @@ data class BooksResponse(
             @SerializedName("readingModes")
             var readingModes: ReadingModes = ReadingModes(),
             @SerializedName("title")
-            var title: String = ""
+            var title: String = "",
         ) {
             data class IndustryIdentifier(
                 @SerializedName("identifier")
                 var identifier: String = "",
                 @SerializedName("type")
-                var type: String = ""
+                var type: String = "",
             )
 
             data class PanelizationSummary(
                 @SerializedName("containsEpubBubbles")
                 var containsEpubBubbles: Boolean = false,
                 @SerializedName("containsImageBubbles")
-                var containsImageBubbles: Boolean = false
+                var containsImageBubbles: Boolean = false,
             )
 
             data class ReadingModes(
                 @SerializedName("image")
                 var image: Boolean = false,
                 @SerializedName("text")
-                var text: Boolean = false
+                var text: Boolean = false,
             )
         }
     }

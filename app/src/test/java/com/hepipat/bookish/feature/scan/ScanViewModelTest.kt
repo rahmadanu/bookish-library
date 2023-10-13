@@ -3,7 +3,7 @@ package com.hepipat.bookish.feature.scan
 import com.hepipat.bookish.core.data.datasource.FakeBooksRemoteDataSource
 import com.hepipat.bookish.core.data.repository.BooksRepositoryImpl
 import com.hepipat.bookish.core.data.testdata.BooksTestData
-import com.hepipat.bookish.util.MainDispatcherRule
+import com.hepipat.bookish.helper.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
