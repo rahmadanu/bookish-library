@@ -1,6 +1,7 @@
 package com.hepipat.bookish.feature.scan
 
-import com.hepipat.bookish.core.data.repository.TestBooksRepository
+import com.hepipat.bookish.core.data.datasource.FakeBooksRemoteDataSource
+import com.hepipat.bookish.core.data.repository.BooksRepositoryImpl
 import com.hepipat.bookish.core.data.testdata.BooksTestData
 import com.hepipat.bookish.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,7 +21,8 @@ class ScanViewModelTest {
     @get:Rule
     val dispatcherRule = MainDispatcherRule()
 
-    private val booksRepository = TestBooksRepository()
+    private val booksDataSource = FakeBooksRemoteDataSource()
+    private val booksRepository = BooksRepositoryImpl(booksDataSource)
 
     private lateinit var viewModel: ScanViewModel
 
@@ -38,7 +40,7 @@ class ScanViewModelTest {
     fun uiStateBooks_whenSuccess_thenBooksScanned() = runTest {
         val collectJob = launch(UnconfinedTestDispatcher()) { viewModel.booksUiState.collect() }
 
-        val testInput = BooksTestData.booksUi.isbnCode
+        val testInput = "1234567890123"
         viewModel.scanBooks(testInput)
 
         val result = viewModel.booksUiState.value

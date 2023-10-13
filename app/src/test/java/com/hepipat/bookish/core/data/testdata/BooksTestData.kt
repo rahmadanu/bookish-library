@@ -16,29 +16,38 @@
 
 package com.hepipat.bookish.core.data.testdata
 
+import com.hepipat.bookish.core.data.remote.response.BooksResponse
 import com.hepipat.bookish.core.domain.model.BooksUi
 
 object BooksTestData {
 
-    val booksUi: BooksUi =
-        BooksUi(
-            id = "0",
-            title = "Clean Code",
-            description = "Clean Code is a book by Uncle Bob",
-            isbnCode = "1234567890123",
-            publishDate = "01-08-2008",
-            author = "Robert C. Martin",
+    val booksResponse: BooksResponse =
+        BooksResponse(
+            items = listOf(
+                BooksResponse.Item(
+                    id = "0",
+                    volumeInfo =
+                        BooksResponse.Item.VolumeInfo(
+                            title = "Clean Code",
+                            description = "Clean Code is a book by Uncle Bob",
+                            publishedDate = "01-08-2008",
+                            authors = listOf("Robert C. Martin"),
+                            industryIdentifiers = listOf(
+                                BooksResponse.Item.VolumeInfo.IndustryIdentifier(
+                                    type = "ISBN-13",
+                                    identifier = "1234567890123"
+                                )
+                            )
+                        )
+                )
+            )
         )
 
-    val nullBooksUi: BooksUi =
-        BooksUi(
-            id = "",
-            title = "",
-            description = "",
-            isbnCode = "",
-            publishDate = "",
-            author = "",
+    val emptyBooksResponse: BooksResponse =
+        BooksResponse(
+            items = listOf(),
+            totalItems = 0,
         )
 
-    const val emptyErrorMessage = "isbn code is empty"
+    const val emptyErrorMessage = "ISBN code is empty"
 }

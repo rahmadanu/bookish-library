@@ -13,6 +13,8 @@ class BooksRepositoryImpl @Inject constructor(
     private val dataSource: BooksRemoteDataSource
 ): BooksRepository {
     override suspend fun getBooksByISBN(isbnCode: String): Result<BooksUi> {
+        if (isbnCode.isEmpty()) return Result.Error(Exception("ISBN code is empty"))
+
         return dataSource.getBooksByISBN(isbnCode)
             .mapToBooksUi()
             .asResult()
