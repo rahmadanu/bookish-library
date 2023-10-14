@@ -9,9 +9,9 @@ class NetworkInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val accessToken = ""
         val request: Request = chain.request().newBuilder()
-                .addHeader("Accept", "application/json")
-                .addHeader("Authorization", accessToken)
-                .build()
+            .addHeader("Accept", "application/json")
+            .addHeader("Authorization", accessToken)
+            .build()
         return chain.proceed(request)
     }
 }

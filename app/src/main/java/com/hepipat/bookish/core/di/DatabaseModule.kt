@@ -6,7 +6,4 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DatabaseModule {
-
-
-}
+class DatabaseModule
