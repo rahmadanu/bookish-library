@@ -45,8 +45,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     protected fun goToFragment(
         parentFragment: Fragment,
-        actionId: Int?,
-        direction: NavDirections?,
+        actionId: Int? = null,
+        direction: NavDirections? = null,
     ) {
         actionId?.let { NavHostFragment.findNavController(parentFragment).navigate(it) }
         direction?.let { NavHostFragment.findNavController(parentFragment).navigate(it) }
@@ -153,6 +153,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         onViewReady(savedInstanceState)
 
+        initUI()
         initRecyclerView()
         initObserver()
         initClickListener()
@@ -162,6 +163,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     abstract fun onViewReady(savedInstanceState: Bundle?)
 
+    open fun initUI() {}
     open fun initFetchData() {}
     open fun initLocalData() {}
     open fun initRecyclerView() {}

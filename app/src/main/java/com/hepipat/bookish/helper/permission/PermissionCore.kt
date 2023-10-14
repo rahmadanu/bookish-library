@@ -3,8 +3,6 @@ package com.hepipat.bookish.helper.permission
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 
@@ -15,6 +13,34 @@ class PermissionCore(activity: FragmentActivity) {
     private var acceptedCallback: ResponsePermissionCallback? = null
     private var deniedCallback: ResponsePermissionCallback? = null
     private var foreverDeniedCallback: ResponsePermissionCallback? = null
+
+    private val listener = object : PermissionFragment.PermissionListener {
+        override fun onRequestPermissionsResult(
+            acceptedPermissions: List<String>,
+            refusedPermissions: List<String>,
+            askAgainPermissions: List<String>,
+        ) {
+            onReceivedPermissionResult(acceptedPermissions, refusedPermissions, askAgainPermissions)
+        }
+    }
+
+    private fun onReceivedPermissionResult(
+        acceptedPermissions: List<String>?,
+        foreverDenied: List<String>?,
+        denied: List<String>?,
+    ) {
+        acceptedPermissions?.let {
+            acceptedCallback?.onResult(it)
+        }
+
+        foreverDenied?.let {
+            foreverDeniedCallback?.onResult(it)
+        }
+
+        denied?.let {
+            deniedCallback?.onResult(it)
+        }
+    }
 
     fun permissions(permission: List<String>): PermissionCore {
         permissions = permission
@@ -90,49 +116,23 @@ class PermissionCore(activity: FragmentActivity) {
         onReceivedPermissionResult(permissions, null, null)
     }
 
-    private val resultMultiplePermissions = activityReference.registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        val acceptedPermissions = ArrayList<String>()
-        val askAgainPermissions = ArrayList<String>()
-        val refusedPermissions = ArrayList<String>()
+    private fun addPermissionForRequest(permissions: List<String>) {
+        val oldFragment =
+            activityReference.supportFragmentManager.findFragmentByTag(TAG) as PermissionFragment?
 
-        permissions.entries.forEach {
-            val permissionName = it.key
-            val accepted = it.value
-            if (accepted) {
-                acceptedPermissions.add(permissionName)
-            } else {
-                if (shouldShowRequestPermissionRationale(activityReference, permissionName)) {
-                    askAgainPermissions.add(permissionName)
-                } else {
-                    refusedPermissions.add(permissionName)
-                }
+        if (oldFragment != null) {
+            oldFragment.addPermissionForRequest(listener, permissions)
+        } else {
+            val newFragment = PermissionFragment.newInstance()
+            newFragment.addPermissionForRequest(listener, permissions)
+            activityReference.runOnUiThread {
+                activityReference.supportFragmentManager.beginTransaction().add(newFragment, TAG)
+                    .commitNowAllowingStateLoss()
             }
         }
-
-        onReceivedPermissionResult(acceptedPermissions, refusedPermissions, askAgainPermissions)
     }
 
-    private fun addPermissionForRequest(permissions: List<String>) {
-        resultMultiplePermissions.launch(permissions.toTypedArray())
-    }
-
-    private fun onReceivedPermissionResult(
-        acceptedPermissions: List<String>?,
-        foreverDenied: List<String>?,
-        denied: List<String>?,
-    ) {
-        acceptedPermissions?.let {
-            acceptedCallback?.onResult(it)
-        }
-
-        foreverDenied?.let {
-            foreverDeniedCallback?.onResult(it)
-        }
-
-        denied?.let {
-            deniedCallback?.onResult(it)
-        }
+    companion object {
+        private const val TAG = "PermissionCore"
     }
 }

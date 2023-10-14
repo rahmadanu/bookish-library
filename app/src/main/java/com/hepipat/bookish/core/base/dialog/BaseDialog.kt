@@ -154,6 +154,7 @@ class BaseDialog private constructor(
         dialogSpass?.setOnCancelListener {
             if (dismiss) {
                 dismissDialog()
+                listener?.onDismissClick()
             }
         }
         dialogSpass?.setCancelable(dismiss)
@@ -266,6 +267,7 @@ class BaseDialog private constructor(
         binding.imgCloseDialog.visibility = if (showPanelButton) {
             binding.imgCloseDialog.setOnClickListener {
                 dismissDialog()
+                listener?.onDismissClick()
             }
             View.VISIBLE
         } else {
@@ -311,9 +313,6 @@ class BaseDialog private constructor(
     fun dismissDialog() {
         if (dialogSpass != null && isShowing()) {
             dialogSpass?.dismiss()
-            if (listener != null) {
-                listener?.onDismissClick()
-            }
         }
     }
 

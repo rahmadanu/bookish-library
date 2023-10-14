@@ -137,7 +137,9 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                 appInfoIntent.data = uri
                 settingsPermissionResult.launch(appInfoIntent)
             },
-            {},
+            cancelCallback = {
+                parentFragmentManager.popBackStack()
+            },
             null,
             false
         )
