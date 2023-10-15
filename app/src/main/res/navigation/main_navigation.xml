@@ -9,7 +9,7 @@
         android:id="@+id/loginFragment"
         android:name="com.hepipat.bookish.feature.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login"></fragment>
+        tools:layout="@layout/fragment_login" />
 
     <fragment
         android:id="@+id/scanFragment"
