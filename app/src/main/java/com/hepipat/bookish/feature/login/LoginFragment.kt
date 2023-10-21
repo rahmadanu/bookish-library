@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.hepipat.bookish.core.base.fragment.BaseFragment
 import com.hepipat.bookish.databinding.FragmentLoginBinding
+import com.hepipat.bookish.helper.extension.hasValidStudentEmail
 import com.hepipat.bookish.helper.firebase.GoogleSignIn
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
