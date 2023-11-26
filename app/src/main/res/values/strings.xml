@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="student_email_format">\@student.upnjatim.ac.id</string>
+    <string name="txt_login">Login</string>
+    <string name="txt_login_message">Welcome! You can easily use our app by logging in with your Google Account.</string>
+    <string name="txt_continue_with_google">Continue with Google</string>
 </resources>

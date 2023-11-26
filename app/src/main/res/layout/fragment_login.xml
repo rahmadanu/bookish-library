@@ -6,6 +6,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".feature.login.LoginFragment">
 
+    <View
+        android:id="@+id/header_bg"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/navy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/white"
+        android:text="@string/txt_login"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_login_msg"
+        app:layout_constraintStart_toStartOf="@id/header_bg"/>
+
+    <TextView
+        android:id="@+id/tv_login_msg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/white"
+        android:text="@string/txt_login_message"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/header_bg"
+        app:layout_constraintStart_toStartOf="@id/header_bg"
+        app:layout_constraintEnd_toEndOf="@id/header_bg" />
+
     <Button
         android:id="@+id/btn_sign_in"
         android:layout_width="wrap_content"
