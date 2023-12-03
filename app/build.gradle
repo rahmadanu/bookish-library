@@ -111,6 +111,7 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // View
     implementation "androidx.activity:activity-ktx:$activity_ktx_version"

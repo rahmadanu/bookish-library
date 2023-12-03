@@ -3,6 +3,8 @@ package com.hepipat.bookish.feature.login
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.hepipat.bookish.R
 import com.hepipat.bookish.core.base.fragment.BaseFragment
 import com.hepipat.bookish.databinding.FragmentLoginBinding
 import com.hepipat.bookish.helper.extension.hasValidStudentEmail
@@ -37,7 +39,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.initClickListener()
 
         binding.btnSignIn.setOnClickListener {
-            showSignInDialog()
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment2)
+//            showSignInDialog()
         }
     }
 

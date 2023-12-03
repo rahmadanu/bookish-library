@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "497022313269",
+    "project_id": "bookish-library",
+    "storage_bucket": "bookish-library.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497022313269:android:740592a083f3562c4a227c",
+        "android_client_info": {
+          "package_name": "com.hepipat.bookish"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497022313269-jfsm0cj0uj7o5eh302rsq99nna0eic9f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hepipat.bookish",
+            "certificate_hash": "60b202be3a77dfd259cccdc7fee8c8792a33215b"
+          }
+        },
+        {
+          "client_id": "497022313269-9qs9lpg11hlq9a72gucr024lcqbgmdna.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5RNRZP2Nx_ti-mz8uAQ16zRO7iyn09Vo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497022313269-9qs9lpg11hlq9a72gucr024lcqbgmdna.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
