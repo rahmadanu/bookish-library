@@ -7,7 +7,7 @@ import javax.inject.Inject
 class BooksRemoteDataSourceImpl @Inject constructor(
     private val apiService: BooksApiService,
 ) : BooksRemoteDataSource {
-    override suspend fun getBooksByISBN(isbnCode: String): BooksResponse {
-        return apiService.getBooks("isbn:$isbnCode")
+    override suspend fun getBooksByIsbn(isbnCode: String): BooksResponse {
+        return apiService.getBookByIsbn(isbnCode)
     }
 }

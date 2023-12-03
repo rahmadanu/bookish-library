@@ -9,5 +9,18 @@
         android:id="@+id/scanFragment"
         android:name="com.hepipat.bookish.feature.scan.ScanFragment"
         android:label="fragment_scan"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_scanFragment_to_borrowFragment"
+            app:destination="@id/borrowFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/borrowFragment"
+        android:name="com.hepipat.bookish.feature.scan.BorrowFragment"
+        android:label="fragment_borrow"
+        tools:layout="@layout/fragment_borrow" >
+        <argument
+            android:name="BooksUi"
+            app:argType="com.hepipat.bookish.core.domain.model.BooksUi" />
+    </fragment>
 </navigation>

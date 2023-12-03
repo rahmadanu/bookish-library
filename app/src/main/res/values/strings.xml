@@ -2,4 +2,18 @@
     <string name="app_name">bookish-library</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="student_email_format">\@student.upnjatim.ac.id</string>
+    <string name="txt_login">Login</string>
+    <string name="txt_login_message">Welcome! You can easily use our app by logging in with your Google Account.</string>
+    <string name="txt_continue_with_google">Continue with Google</string>
+
+    <!-- Error API -->
+    <string name="txt_error_connection">The internet connection appears to be offline</string>
+    <string name="txt_error_unauthorized">Unauthorised User</string>
+    <string name="txt_error_forbidden">Forbidden</string>
+    <string name="txt_error_internal_error">Internal Server Error</string>
+    <string name="txt_error_bad_request">Bad Request</string>
+    <string name="txt_error_no_internet_connection">No Internet Connection</string>
+    <string name="txt_error_not_found">Oops! The item you\'re looking for couldn\'t be found.</string>
+    <string name="txt_error_custom">Something Went Wrong API is not responding properly!</string>
 </resources>

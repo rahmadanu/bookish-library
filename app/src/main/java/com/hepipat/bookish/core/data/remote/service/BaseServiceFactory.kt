@@ -24,7 +24,7 @@ object BaseServiceFactory {
 
     private fun provideBooksRetrofit(): BooksApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL_BOOKS_API)
+            .baseUrl(BuildConfig.BASE_URL_BOOKISH_API)
             .client(provideOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
