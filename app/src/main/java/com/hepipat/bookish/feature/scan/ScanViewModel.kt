@@ -33,7 +33,7 @@ private fun initScanBooksUiState(
     isbnCode: String,
     repository: BooksRepository,
 ): Flow<ScanBooksUiState> {
-    return flow { emit(repository.getBooksByISBN(isbnCode)) }
+    return flow { emit(repository.getBooksByIsbn(isbnCode)) }
         .map { result ->
             when (result) {
                 is Result.Success -> {
@@ -42,7 +42,7 @@ private fun initScanBooksUiState(
                 }
 
                 is Result.Error -> {
-                    ScanBooksUiState.Error(result.exception?.message.toString())
+                    ScanBooksUiState.Error(result.exception)
                 }
 
                 is Result.Loading -> {

@@ -1,7 +1,6 @@
 package com.hepipat.bookish.feature.scan
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,10 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.ResultPoint
 import com.hepipat.bookish.core.base.fragment.BaseFragment
 import com.hepipat.bookish.databinding.FragmentScanBinding
+import com.hepipat.bookish.helper.error.ErrorCodeHelper
 import com.hepipat.bookish.helper.permission.PermissionCore
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
@@ -55,8 +56,11 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
         container: ViewGroup?,
     ): FragmentScanBinding = FragmentScanBinding.inflate(inflater, container, false)
 
-    override fun onViewReady(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         checkPermissions()
+    }
+    override fun onViewReady(savedInstanceState: Bundle?) {
         initScanner()
     }
 
@@ -76,24 +80,18 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
             .onEach {
                 when (it) {
                     is ScanBooksUiState.Scanned -> {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Book scanned")
-                            .setMessage("Book Title: ${it.booksUi.title}")
-                            .setPositiveButton("OK") { dialog, _ ->
-                                dialog.dismiss()
-                            }
-                            .show()
+                        val action = ScanFragmentDirections.actionScanFragmentToBorrowFragment(it.booksUi)
+                        findNavController().navigate(action)
                     }
-
                     is ScanBooksUiState.NotFound -> {
                         showToast("Book not found")
                     }
-
                     is ScanBooksUiState.Failed -> {}
                     is ScanBooksUiState.Error -> {
-                        showToast("Error ${it.message}")
+                        ErrorCodeHelper.getErrorMessage(requireContext(), it.exception)?.let { message ->
+                            showToast(message)
+                        }
                     }
-
                     is ScanBooksUiState.Loading -> {
                         showToast("Loading...")
                     }
