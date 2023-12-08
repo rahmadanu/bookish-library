@@ -40,4 +40,9 @@
             android:name="BooksUi"
             app:argType="com.hepipat.bookish.core.domain.model.BooksUi" />
     </fragment>
+    <fragment
+        android:id="@+id/myBooksFragment"
+        android:name="com.hepipat.bookish.feature.mybooks.MyBooksFragment"
+        android:label="fragment_my_books"
+        tools:layout="@layout/fragment_my_books" />
 </navigation>

@@ -153,24 +153,22 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         onViewReady(savedInstanceState)
 
-        initUI()
+        initView()
         initRecyclerView()
         initObserver()
         initClickListener()
         initFetchData()
         initLocalData()
         initProperties()
-        initView()
     }
 
     abstract fun onViewReady(savedInstanceState: Bundle?)
 
-    open fun initUI() {}
+    open fun initView() {}
     open fun initFetchData() {}
     open fun initLocalData() {}
     open fun initRecyclerView() {}
     open fun initObserver() {}
     open fun initClickListener() {}
     open fun initProperties() {}
-    open fun initView() {}
 }

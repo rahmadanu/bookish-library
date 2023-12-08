@@ -9,7 +9,7 @@
         android:id="@+id/scanFragment"
         android:icon="@drawable/ic_scan"/>
     <item
-        android:title="Library"
-        android:id="@+id/libraryFragment"
+        android:title="My Books"
+        android:id="@+id/myBooksFragment"
         android:icon="@drawable/ic_library"/>
 </menu>
