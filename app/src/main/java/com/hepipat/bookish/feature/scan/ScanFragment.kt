@@ -80,8 +80,12 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
             .onEach {
                 when (it) {
                     is ScanBooksUiState.Scanned -> {
-                        val action = ScanFragmentDirections.actionScanFragmentToBorrowFragment(it.booksUi)
-                        findNavController().navigate(action)
+                        if (lastScannedBook != "") {
+                            val action =
+                                ScanFragmentDirections.actionScanFragmentToBorrowFragment(it.booksUi)
+                            findNavController().navigate(action)
+                            lastScannedBook = ""
+                        }
                     }
                     is ScanBooksUiState.NotFound -> {
                         showToast("Book not found")
@@ -93,7 +97,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                         }
                     }
                     is ScanBooksUiState.Loading -> {
-                        showToast("Loading...")
+                        //showToast("Loading...")
                     }
                 }
             }

@@ -6,6 +6,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.hepipat.bookish.R
 import com.hepipat.bookish.databinding.ActivityMainBinding
@@ -26,16 +28,11 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment2,
+                R.id.homeFragment,
                 -> {
                     binding.bottomNavigation.setupWithNavController(navController)
                     binding.bottomNavigation.visibility = View.VISIBLE
                 }
-                R.id.scanFragment,
-                -> {
-                    binding.bottomNavigation.visibility = View.GONE
-                }
-
                 else -> {
                     binding.bottomNavigation.visibility = View.GONE
                 }

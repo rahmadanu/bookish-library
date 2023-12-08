@@ -7,8 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.hepipat.bookish.R
 import com.hepipat.bookish.core.base.fragment.BaseFragment
 import com.hepipat.bookish.databinding.FragmentLoginBinding
-import com.hepipat.bookish.helper.extension.hasValidStudentEmail
-import com.hepipat.bookish.helper.firebase.GoogleSignIn
+import com.hepipat.bookish.helper.signin.GoogleSignIn
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
@@ -26,8 +25,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private fun initGoogleSignIn() {
         signIn = GoogleSignIn.Builder(this@LoginFragment)
             .setOnSuccessListener {
-                binding.btnSignIn.text = it.username
-                binding.btnSignIn.isEnabled = false
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
             .setOnFailedListener {
                 showToast(it)
@@ -39,8 +37,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.initClickListener()
 
         binding.btnSignIn.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment2)
-//            showSignInDialog()
+            showSignInDialog()
         }
     }
 

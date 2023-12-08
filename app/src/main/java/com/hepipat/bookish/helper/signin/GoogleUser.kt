@@ -1,4 +1,4 @@
-package com.hepipat.bookish.helper.firebase
+package com.hepipat.bookish.helper.signin
 
 data class GoogleUser(
     val idToken: String,

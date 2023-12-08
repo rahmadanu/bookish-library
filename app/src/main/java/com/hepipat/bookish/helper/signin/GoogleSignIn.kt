@@ -1,4 +1,4 @@
-package com.hepipat.bookish.helper.firebase
+package com.hepipat.bookish.helper.signin
 
 import android.content.Intent
 import android.content.IntentSender
