@@ -33,12 +33,17 @@
 
     <fragment
         android:id="@+id/borrowFragment"
-        android:name="com.hepipat.bookish.feature.scan.BorrowFragment"
+        android:name="com.hepipat.bookish.feature.borrow.BorrowFragment"
         android:label="fragment_borrow"
         tools:layout="@layout/fragment_borrow" >
         <argument
             android:name="BooksUi"
             app:argType="com.hepipat.bookish.core.domain.model.BooksUi" />
+        <action
+            android:id="@+id/action_borrowFragment_to_homeFragment"
+            app:popUpTo="@id/main_navigation"
+            app:popUpToInclusive="true"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/myBooksFragment"

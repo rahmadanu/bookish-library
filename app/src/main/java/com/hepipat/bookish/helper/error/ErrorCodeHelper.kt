@@ -3,6 +3,7 @@ package com.hepipat.bookish.helper.error
 import android.content.Context
 import com.google.gson.JsonSyntaxException
 import com.hepipat.bookish.R
+import com.hepipat.bookish.core.data.remote.response.ErrorResponse
 import retrofit2.HttpException
 import javax.net.ssl.HttpsURLConnection
 
@@ -28,6 +29,7 @@ class ErrorCodeHelper {
                                 else -> e.localizedMessage
                             }
                             is JsonSyntaxException -> context.getString(R.string.txt_error_custom)
+                            is ErrorResponse -> e.error.toString()
                             else -> e.message.toString()
                         }
                     }

@@ -1,6 +1,8 @@
 package com.hepipat.bookish.core.data.repository
 
 import com.hepipat.bookish.core.data.remote.BooksRemoteDataSource
+import com.hepipat.bookish.core.data.remote.request.BorrowRequestBody
+import com.hepipat.bookish.core.data.remote.response.BorrowedResponse
 import com.hepipat.bookish.core.domain.model.BooksUi
 import com.hepipat.bookish.core.domain.model.MyBooksUi
 import com.hepipat.bookish.core.domain.model.mapToBooksUi
@@ -16,6 +18,12 @@ class BooksRepositoryImpl @Inject constructor(
 
         return proceed {
             dataSource.getBooksByIsbn(isbnCode).mapToBooksUi()
+        }
+    }
+
+    override suspend fun borrowBook(borrow: BorrowRequestBody): Result<BorrowedResponse> {
+        return proceed {
+            dataSource.borrowBook(borrow)
         }
     }
 

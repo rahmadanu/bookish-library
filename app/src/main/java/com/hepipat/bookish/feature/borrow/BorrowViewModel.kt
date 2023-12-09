@@ -1,7 +1,8 @@
-package com.hepipat.bookish.feature.mybooks
+package com.hepipat.bookish.feature.borrow
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hepipat.bookish.core.data.remote.request.BorrowRequestBody
 import com.hepipat.bookish.core.data.repository.BooksRepository
 import com.hepipat.bookish.helper.api.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,39 +16,39 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyBooksViewModel @Inject constructor(
+class BorrowViewModel @Inject constructor(
     private val repository: BooksRepository,
 ) : ViewModel() {
-    private val _booksUiState = MutableStateFlow<MyBooksUiState>(MyBooksUiState.Loading)
-    val booksUiState = _booksUiState.asStateFlow()
+    private val _borrowUiState = MutableStateFlow<BorrowBookUiState>(BorrowBookUiState.Loading)
+    val borrowUiState = _borrowUiState.asStateFlow()
 
-    fun getMyBooks() {
+    fun borrowBook(borrow: BorrowRequestBody) {
         viewModelScope.launch {
-            initMyBooksUiState(repository = repository)
-                .collect { _booksUiState.value = it }
+            borrowBookState(borrow, repository = repository)
+                .collect { _borrowUiState.value = it }
         }
     }
 }
 
-private fun initMyBooksUiState(
+private fun borrowBookState(
+    borrow: BorrowRequestBody,
     repository: BooksRepository,
-): Flow<MyBooksUiState> {
-    return flow { emit(repository.getMyBooks()) }
+): Flow<BorrowBookUiState> {
+    return flow { emit(repository.borrowBook(borrow)) }
         .map { result ->
             when (result) {
                 is Result.Success -> {
-                    if (result.data.isNotEmpty()) MyBooksUiState.Success(result.data)
-                    else MyBooksUiState.Empty
+                    BorrowBookUiState.Success
                 }
 
                 is Result.Error -> {
-                    MyBooksUiState.Error(result.exception)
+                    BorrowBookUiState.Error(result.exception)
                 }
 
                 is Result.Loading -> {
-                    MyBooksUiState.Loading
+                    BorrowBookUiState.Loading
                 }
             }
         }
-        .onStart { emit(MyBooksUiState.Loading) }
+        .onStart { emit(BorrowBookUiState.Loading) }
 }

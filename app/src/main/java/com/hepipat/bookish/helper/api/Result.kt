@@ -19,7 +19,17 @@ suspend fun <T> proceed(coroutines: suspend () -> T): Result<T> {
     return try {
         Result.Success(coroutines.invoke())
     } catch (e: Exception) {
-        Result.Error(e)
+        if (e is HttpException) {
+            val errorMessageResponseType = object : TypeToken<ErrorResponse>() {}.type
+            val error: ErrorResponse = Gson().fromJson(e.response()?.errorBody()?.charStream(), errorMessageResponseType)
+            if (!error.error.isNullOrEmpty()) {
+                Result.Error(error)
+            } else {
+                Result.Error(e)
+            }
+        } else {
+            Result.Error(e)
+        }
     }
 }
 
