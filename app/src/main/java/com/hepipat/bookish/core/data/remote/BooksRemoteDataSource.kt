@@ -7,6 +7,7 @@ import com.hepipat.bookish.core.data.remote.response.BorrowedResponse
 import com.hepipat.bookish.core.data.remote.response.ReturnBooksResponse
 
 interface BooksRemoteDataSource {
+    suspend fun getBooks(): List<BooksResponse>
     suspend fun getBooksByIsbn(isbnCode: String): BooksResponse
     suspend fun borrowBook(borrow: BorrowRequestBody): BorrowedResponse
     suspend fun getBorrowBooks(): List<BorrowBooksResponse>

@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hepipat.bookish.core.base.fragment.BaseFragment
 import com.hepipat.bookish.databinding.FragmentMyBooksBinding
@@ -36,7 +37,9 @@ class MyBooksFragment : BaseFragment<FragmentMyBooksBinding>() {
         super.initRecyclerView()
         adapter = BookTitleAdapter()
         adapter.itemClickListener = {
-
+            val action =
+                MyBooksFragmentDirections.actionMyBooksFragmentToDetailBookFragment(it)
+            findNavController().navigate(action)
         }
 
         binding.apply {

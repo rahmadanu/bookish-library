@@ -19,7 +19,11 @@
         android:id="@+id/homeFragment"
         android:name="com.hepipat.bookish.feature.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailBookFragment"
+            app:destination="@id/detailBookFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/scanFragment"
@@ -49,5 +53,17 @@
         android:id="@+id/myBooksFragment"
         android:name="com.hepipat.bookish.feature.mybooks.MyBooksFragment"
         android:label="fragment_my_books"
-        tools:layout="@layout/fragment_my_books" />
+        tools:layout="@layout/fragment_my_books" >
+        <action
+            android:id="@+id/action_myBooksFragment_to_detailBookFragment"
+            app:destination="@id/detailBookFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailBookFragment"
+        android:name="com.hepipat.bookish.feature.detail.DetailBookFragment"
+        android:label="DetailBookFragment" >
+        <argument
+            android:name="BooksUi"
+            app:argType="com.hepipat.bookish.core.domain.model.BooksUi" />
+    </fragment>
 </navigation>

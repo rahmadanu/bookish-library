@@ -12,6 +12,9 @@ import retrofit2.http.Path
 
 interface BooksApiService {
 
+    @GET("books")
+    suspend fun getBooks(): List<BooksResponse>
+
     @GET("books/isbn/{isbn_code}")
     suspend fun getBookByIsbn(
         @Path("isbn_code") isbn: String

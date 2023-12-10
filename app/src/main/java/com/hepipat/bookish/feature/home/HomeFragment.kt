@@ -1,60 +1,81 @@
 package com.hepipat.bookish.feature.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.hepipat.bookish.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.hepipat.bookish.core.base.fragment.BaseFragment
+import com.hepipat.bookish.databinding.FragmentHomeBinding
+import com.hepipat.bookish.feature.mybooks.BookTitleAdapter
+import com.hepipat.bookish.helper.error.ErrorCodeHelper
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var adapter: BookTitleAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val viewModel: HomeViewModel by viewModels()
+
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+
+    override fun onViewReady(savedInstanceState: Bundle?) {
+    }
+
+    override fun initRecyclerView() {
+        super.initRecyclerView()
+        adapter = BookTitleAdapter()
+        adapter.itemClickListener = {
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToDetailBookFragment(it)
+            findNavController().navigate(action)
+        }
+
+        binding.apply {
+            rvBooks.layoutManager = LinearLayoutManager(requireContext())
+            rvBooks.adapter = adapter
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    override fun initFetchData() {
+        super.initFetchData()
+        viewModel.getHomeBooks()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun initObserver() {
+        super.initObserver()
+        viewModel.booksUiState
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                when (it) {
+                    is HomeBooksUiState.Success -> {
+                        binding.pbBooksList.visibility = View.GONE
+                        adapter.submitList(it.books)
+                    }
+                    is HomeBooksUiState.Empty -> {}
+                    is HomeBooksUiState.Failed -> {}
+                    is HomeBooksUiState.Error -> {
+                        binding.pbBooksList.visibility = View.GONE
+                        ErrorCodeHelper.getErrorMessage(requireContext(), it.exception)?.let { message ->
+                            showToast(message)
+                        }
+                    }
+                    is HomeBooksUiState.Loading -> {
+                        binding.pbBooksList.visibility = View.VISIBLE
+                    }
                 }
             }
+            .launchIn(lifecycleScope)
     }
 }

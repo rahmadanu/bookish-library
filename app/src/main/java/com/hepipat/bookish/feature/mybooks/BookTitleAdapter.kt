@@ -8,26 +8,26 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hepipat.bookish.core.domain.model.BooksUi
-import com.hepipat.bookish.core.domain.model.MyBooksUi
+import com.hepipat.bookish.core.domain.model.TitleBooksUi
 import com.hepipat.bookish.databinding.ItemTitleBinding
 
 class BookTitleAdapter: RecyclerView.Adapter<BookTitleAdapter.TitleViewHolder>() {
 
     var itemClickListener: ((item: BooksUi) -> Unit)? = null
 
-    private val diffCallback = object : DiffUtil.ItemCallback<MyBooksUi>() {
-        override fun areItemsTheSame(oldItem: MyBooksUi, newItem: MyBooksUi): Boolean {
+    private val diffCallback = object : DiffUtil.ItemCallback<TitleBooksUi>() {
+        override fun areItemsTheSame(oldItem: TitleBooksUi, newItem: TitleBooksUi): Boolean {
             return oldItem.title == newItem.title
         }
 
-        override fun areContentsTheSame(oldItem: MyBooksUi, newItem: MyBooksUi): Boolean {
+        override fun areContentsTheSame(oldItem: TitleBooksUi, newItem: TitleBooksUi): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }
     }
 
     private val differ = AsyncListDiffer(this, diffCallback)
 
-    fun submitList(myBooks: List<MyBooksUi>?) {
+    fun submitList(myBooks: List<TitleBooksUi>?) {
         differ.submitList(myBooks)
     }
 
@@ -44,7 +44,7 @@ class BookTitleAdapter: RecyclerView.Adapter<BookTitleAdapter.TitleViewHolder>()
 
     inner class TitleViewHolder(private val binding: ItemTitleBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: MyBooksUi) {
+        fun bind(item: TitleBooksUi) {
             with(binding) {
                 tvTitle.text = item.title
 
