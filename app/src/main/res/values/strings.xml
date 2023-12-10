@@ -16,4 +16,13 @@
     <string name="txt_error_no_internet_connection">No Internet Connection</string>
     <string name="txt_error_not_found">Oops! The item you\'re looking for couldn\'t be found.</string>
     <string name="txt_error_custom">Something Went Wrong API is not responding properly!</string>
+
+    <!-- Other Texts -->
+    <string name="txt_confirm_exit">Confirm Exit</string>
+    <string name="txt_are_you_sure">Are you sure you want to exit?</string>
+    <string name="txt_no">No</string>
+    <string name="txt_yes">Yes</string>
+    <string name="txt_confirm_borrow">Confirm Borrow</string>
+    <string name="txt_borrow_this_book">Borrow this book?</string>
+    <string name="txt_borrow_success">Borrow Success</string>
 </resources>
