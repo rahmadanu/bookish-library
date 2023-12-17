@@ -2,14 +2,11 @@ package com.hepipat.bookish.feature.returnbook
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -17,15 +14,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.hepipat.bookish.R
 import com.hepipat.bookish.core.base.fragment.BaseFragment
-import com.hepipat.bookish.core.data.remote.request.ReturnRequestBody
 import com.hepipat.bookish.databinding.FragmentReturnBinding
+import com.hepipat.bookish.helper.error.ErrorCodeHelper
 import com.hepipat.bookish.helper.fileprocessing.reduceFileImage
 import com.hepipat.bookish.helper.fileprocessing.uriToFile
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -37,6 +40,8 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
+
+    private val returnArgs: ReturnFragmentArgs by navArgs()
 
     private val viewModel: ReturnViewModel by viewModels()
 
@@ -68,6 +73,7 @@ class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
         val reducedPhoto = photo?.let { reduceFileImage(it) }
 
         val fileRequestBody = reducedPhoto?.asRequestBody(FILE_TYPE.toMediaTypeOrNull())
+
         val partFile = fileRequestBody?.let {
             MultipartBody.Part.createFormData(
                 FILE_PARAM, reducedPhoto.name, it
@@ -77,10 +83,8 @@ class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDateandTime: String = sdf.format(Date())
 
-        val returnRequestBody = ReturnRequestBody (currentDateandTime, 3)
-
         if (partFile != null) {
-            viewModel.returnBook(partFile, returnRequestBody)
+            viewModel.returnBook(partFile, currentDateandTime, returnArgs.borrowId)
         }
     }
 
@@ -136,6 +140,28 @@ class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_IMAGE_SELECT)
     }
 
+    override fun initObserver() {
+        super.initObserver()
+        viewModel.returnUiState
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                when (it) {
+                    is ReturnBookUiState.Success -> {
+                        findNavController().navigate(R.id.action_returnFragment_to_myBooksFragment)
+                    }
+                    is ReturnBookUiState.Error -> {
+                        ErrorCodeHelper.getErrorMessage(requireContext(), it.exception)?.let { message ->
+                            showToast(message)
+                        }
+                    }
+                    is ReturnBookUiState.Loading -> {
+                        //showToast("Loading...")
+                    }
+                }
+            }
+            .launchIn(lifecycleScope)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -157,6 +183,6 @@ class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
 
     companion object {
         private const val FILE_TYPE = "image/jpeg"
-        private const val FILE_PARAM = "avatar"
+        private const val FILE_PARAM = "file"
     }
 }

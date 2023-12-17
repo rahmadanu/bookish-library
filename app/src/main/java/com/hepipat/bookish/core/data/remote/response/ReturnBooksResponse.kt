@@ -23,4 +23,8 @@ data class ReturnBooksResponse(
     var userId: Int = 0,
     @SerializedName("borrow_id")
     var borrowId: Int,
+    @SerializedName("proof_image")
+    var proof: String,
+    @SerializedName("book")
+    var book: BooksResponse,
 )

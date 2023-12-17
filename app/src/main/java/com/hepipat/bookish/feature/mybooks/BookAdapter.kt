@@ -45,10 +45,17 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: BooksUi) {
             with(binding) {
-                Glide.with(itemView)
-                    .load(item.image)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(ivCover)
+                if (item.image.isEmpty()) {
+                    Glide.with(itemView)
+                        .load(item.proof)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(ivCover)
+                } else {
+                    Glide.with(itemView)
+                        .load(item.image)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(ivCover)
+                }
 
                 itemView.setOnClickListener {
                     itemClickListener?.invoke(item)

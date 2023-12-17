@@ -8,6 +8,7 @@ import com.hepipat.bookish.core.data.remote.response.BorrowedResponse
 import com.hepipat.bookish.core.data.remote.response.ReturnBooksResponse
 import com.hepipat.bookish.core.data.remote.service.BooksApiService
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class BooksRemoteDataSourceImpl @Inject constructor(
@@ -27,9 +28,10 @@ class BooksRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun returnBook(
         partFile: MultipartBody.Part,
-        returnBook: ReturnRequestBody
+        returnAt: RequestBody,
+        borrowId: RequestBody
     ): ReturnBooksResponse {
-        return apiService.returnBook(partFile, returnBook)
+        return apiService.returnBook(partFile, returnAt, borrowId)
     }
 
     override suspend fun getBorrowBooks(): List<BorrowBooksResponse> {

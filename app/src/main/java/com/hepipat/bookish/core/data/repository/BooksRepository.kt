@@ -13,6 +13,6 @@ interface BooksRepository {
     suspend fun getBooks(): Result<List<TitleBooksUi>>
     suspend fun getBooksByIsbn(isbnCode: String): Result<BooksUi>
     suspend fun borrowBook(borrow: BorrowRequestBody): Result<BorrowedResponse>
-    suspend fun returnBook(partFile: MultipartBody.Part, returnBook: ReturnRequestBody): Result<ReturnBooksResponse>
+    suspend fun returnBook(partFile: MultipartBody.Part, returnedAt: String, borrowId: String): Result<ReturnBooksResponse>
     suspend fun getMyBooks(): Result<List<TitleBooksUi>>
 }

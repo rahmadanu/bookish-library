@@ -18,6 +18,6 @@ data class BorrowBooksResponse(
     var updatedAt: String = "",
     @SerializedName("user_id")
     var userId: Int = 0,
-    @SerializedName("Book")
+    @SerializedName("book")
     var book: BooksResponse
 )

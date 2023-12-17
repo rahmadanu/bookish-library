@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/returnFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -73,5 +73,15 @@
         android:id="@+id/returnFragment"
         android:name="com.hepipat.bookish.feature.returnbook.ReturnFragment"
         android:label="fragment_return"
-        tools:layout="@layout/fragment_return" />
+        tools:layout="@layout/fragment_return" >
+        <argument
+            android:name="borrowId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_returnFragment_to_myBooksFragment"
+            app:destination="@id/myBooksFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/main_navigation"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

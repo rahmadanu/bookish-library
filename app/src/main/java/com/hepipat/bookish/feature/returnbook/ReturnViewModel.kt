@@ -23,9 +23,9 @@ class ReturnViewModel @Inject constructor(
     private val _returnUiState = MutableStateFlow<ReturnBookUiState>(ReturnBookUiState.Loading)
     val returnUiState = _returnUiState.asStateFlow()
 
-    fun returnBook(partFile: MultipartBody.Part, returnBook: ReturnRequestBody) {
+    fun returnBook(partFile: MultipartBody.Part, returnedAt: String, borrowId: String) {
         viewModelScope.launch {
-            returnBookState(partFile, returnBook, repository = repository)
+            returnBookState(partFile,  returnedAt, borrowId, repository = repository)
                 .collect { _returnUiState.value = it }
         }
     }
@@ -33,10 +33,11 @@ class ReturnViewModel @Inject constructor(
 
 private fun returnBookState(
     partFile: MultipartBody.Part,
-    returnBook: ReturnRequestBody,
+    returnedAt: String,
+    borrowId: String,
     repository: BooksRepository,
 ): Flow<ReturnBookUiState> {
-    return flow { emit(repository.returnBook(partFile, returnBook)) }
+    return flow { emit(repository.returnBook(partFile, returnedAt, borrowId)) }
         .map { result ->
             when (result) {
                 is Result.Success -> {

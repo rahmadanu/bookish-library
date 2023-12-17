@@ -66,7 +66,7 @@ class BorrowFragment : BaseFragment<FragmentBorrowBinding>() {
         borrowDialogBuilder.setCancelable(true)
         val showBorrowDialog = borrowDialogBuilder.show()
         confirmBorrow.btnConfirm.setOnClickListener {
-            viewModel.borrowBook(BorrowRequestBody(1, id.toInt(), "2023-12-30"))
+            viewModel.borrowBook(BorrowRequestBody(30, id.toInt(), "2023-12-30"))
             showBorrowDialog.dismiss()
         }
         confirmBorrow.btnDismiss.setOnClickListener {

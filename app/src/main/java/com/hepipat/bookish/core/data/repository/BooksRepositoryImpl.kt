@@ -2,7 +2,6 @@ package com.hepipat.bookish.core.data.repository
 
 import com.hepipat.bookish.core.data.remote.BooksRemoteDataSource
 import com.hepipat.bookish.core.data.remote.request.BorrowRequestBody
-import com.hepipat.bookish.core.data.remote.request.ReturnRequestBody
 import com.hepipat.bookish.core.data.remote.response.BorrowedResponse
 import com.hepipat.bookish.core.data.remote.response.ReturnBooksResponse
 import com.hepipat.bookish.core.domain.model.BooksUi
@@ -10,7 +9,9 @@ import com.hepipat.bookish.core.domain.model.TitleBooksUi
 import com.hepipat.bookish.core.domain.model.mapToBooksUi
 import com.hepipat.bookish.helper.api.Result
 import com.hepipat.bookish.helper.api.proceed
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 class BooksRepositoryImpl @Inject constructor(
@@ -42,10 +43,14 @@ class BooksRepositoryImpl @Inject constructor(
 
     override suspend fun returnBook(
         partFile: MultipartBody.Part,
-        returnBook: ReturnRequestBody
+        returnedAt: String,
+        borrowId: String
     ): Result<ReturnBooksResponse> {
+        val returnDate = returnedAt.toRequestBody("text/plain".toMediaType())
+        val borrow = borrowId.toRequestBody("text/plain".toMediaType())
+
         return proceed {
-            dataSource.returnBook(partFile, returnBook)
+            dataSource.returnBook(partFile, returnDate, borrow)
         }
     }
 
@@ -53,9 +58,16 @@ class BooksRepositoryImpl @Inject constructor(
         val myBooks = mutableListOf<TitleBooksUi>()
 
         return proceed {
-            val borrowedBooks = dataSource.getBorrowBooks().map { it.book.mapToBooksUi() }
-            //val returnedBooks = dataSource.getReturnBooks().map { it.book.mapToBooksUi() }
-            val returnedBooks = emptyList<BooksUi>()
+            val borrowedBooks = dataSource.getBorrowBooks().map {
+                it.book.mapToBooksUi().also {
+                    book ->
+                    book.borrowed = true
+                    book.borrowId = it.id.toString()
+                }
+            }
+            val returnedBooks = dataSource.getReturnBooks().map {
+                BooksUi(it.proof)
+            }
             myBooks.add(TitleBooksUi("Borrowed Books", borrowedBooks))
             myBooks.add(TitleBooksUi("Returned Books", returnedBooks))
             myBooks
