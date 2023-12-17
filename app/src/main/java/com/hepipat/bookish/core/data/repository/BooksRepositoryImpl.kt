@@ -2,12 +2,15 @@ package com.hepipat.bookish.core.data.repository
 
 import com.hepipat.bookish.core.data.remote.BooksRemoteDataSource
 import com.hepipat.bookish.core.data.remote.request.BorrowRequestBody
+import com.hepipat.bookish.core.data.remote.request.ReturnRequestBody
 import com.hepipat.bookish.core.data.remote.response.BorrowedResponse
+import com.hepipat.bookish.core.data.remote.response.ReturnBooksResponse
 import com.hepipat.bookish.core.domain.model.BooksUi
 import com.hepipat.bookish.core.domain.model.TitleBooksUi
 import com.hepipat.bookish.core.domain.model.mapToBooksUi
 import com.hepipat.bookish.helper.api.Result
 import com.hepipat.bookish.helper.api.proceed
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class BooksRepositoryImpl @Inject constructor(
@@ -34,6 +37,15 @@ class BooksRepositoryImpl @Inject constructor(
     override suspend fun borrowBook(borrow: BorrowRequestBody): Result<BorrowedResponse> {
         return proceed {
             dataSource.borrowBook(borrow)
+        }
+    }
+
+    override suspend fun returnBook(
+        partFile: MultipartBody.Part,
+        returnBook: ReturnRequestBody
+    ): Result<ReturnBooksResponse> {
+        return proceed {
+            dataSource.returnBook(partFile, returnBook)
         }
     }
 

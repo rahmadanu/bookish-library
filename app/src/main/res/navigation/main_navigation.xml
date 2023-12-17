@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/returnFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -65,5 +65,13 @@
         <argument
             android:name="BooksUi"
             app:argType="com.hepipat.bookish.core.domain.model.BooksUi" />
+        <action
+            android:id="@+id/action_detailBookFragment_to_returnFragment"
+            app:destination="@id/returnFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/returnFragment"
+        android:name="com.hepipat.bookish.feature.returnbook.ReturnFragment"
+        android:label="fragment_return"
+        tools:layout="@layout/fragment_return" />
 </navigation>
