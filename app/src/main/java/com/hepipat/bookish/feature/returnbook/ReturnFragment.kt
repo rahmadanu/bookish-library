@@ -3,10 +3,13 @@ package com.hepipat.bookish.feature.returnbook
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
@@ -44,6 +47,7 @@ class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
 
     override fun initView() {
         binding.apply {
+                btnReturn.isEnabled = false
                 cvAddImage.setOnClickListener {
                     chooseImageSource()
                 }
@@ -99,18 +103,17 @@ class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
         if (requestCode == REQUEST_IMAGE_SELECT && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImg: Uri = data.data as Uri
             val myFile = uriToFile(selectedImg, requireContext())
-            binding.ivImg.load(selectedImg)
+            binding.apply {
+                ivImg.load(selectedImg)
+                ivImg.visibility = VISIBLE
+                ivAddImg.visibility = GONE
+                tvAddImage.visibility = GONE
+                btnReturn.isEnabled = true
+            }
+
 
             getFile = myFile
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_return, container, false)
     }
 
     companion object {
