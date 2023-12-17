@@ -2,18 +2,23 @@ package com.hepipat.bookish.feature.returnbook
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.hepipat.bookish.R
 import com.hepipat.bookish.core.base.fragment.BaseFragment
 import com.hepipat.bookish.core.data.remote.request.ReturnRequestBody
@@ -34,6 +39,8 @@ import java.util.Locale
 class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
 
     private val viewModel: ReturnViewModel by viewModels()
+
+    private lateinit var uri: Uri
 
     private val REQUEST_IMAGE_SELECT = 100
     private var getFile: File? = null
@@ -86,7 +93,39 @@ class ReturnFragment : BaseFragment<FragmentReturnBinding>() {
     }
 
     private fun openCamera() {
-        TODO("Not yet implemented")
+        val photoFile = File.createTempFile(
+            "IMG_",
+            ".jpg",
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        )
+
+        uri = FileProvider.getUriForFile(
+            requireActivity(),
+            "${requireActivity().packageName}.provider",
+            photoFile
+        )
+        cameraResult.launch(uri)
+    }
+
+    private val cameraResult =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { result ->
+            if (result) {
+                handleCameraImage(uri)
+            }
+        }
+
+    private fun handleCameraImage(uri: Uri) {
+        val myFile = uriToFile(uri, requireContext())
+        binding.apply {
+            ivImg.load(uri)
+            ivImg.visibility = VISIBLE
+            ivAddImg.visibility = GONE
+            tvAddImage.visibility = GONE
+            btnReturn.isEnabled = true
+        }
+
+        getFile = myFile
+
     }
 
     private fun openGallery() {
